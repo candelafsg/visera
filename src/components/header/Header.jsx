@@ -1,19 +1,22 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import styles from "./header.module.css";
 
 export const Header = () => {
   return (
     <header className={styles.header}>
-      <span className={styles.logo}>LOGO</span>
+   
 
       <nav className={styles.nav}>
-        <Link href="/contacto" className={styles.link}>
-          Contacto
+        <Link href="/" className={styles.link}>
+          Visera.
         </Link>
-        <Link href="/nosotras" className={styles.link}>
-          Nosotras
+        <Link href="/servicios" className={styles.link}>
+          Servicios
         </Link>
+       
       </nav>
+       <ThemeToggle />
     </header>
   );
 };

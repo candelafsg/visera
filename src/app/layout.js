@@ -1,6 +1,22 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/components/header/Header";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "./globals.css";
+
+// Se ejecuta ANTES de que React pinte nada, directo en el <head>.
+// Por defecto el tema es "dark" salvo que el usuario ya haya elegido "light"
+// antes (guardado en localStorage). Así evitamos el flash de tema incorrecto.
+const themeInitScript = `
+  (function () {
+    try {
+      var stored = localStorage.getItem("theme");
+      var theme = stored === "light" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  })();
+`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +36,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
-        <Header />
-        {children}
+        <ThemeProvider>
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
